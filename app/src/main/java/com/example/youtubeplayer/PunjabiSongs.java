@@ -2,187 +2,79 @@ package com.example.youtubeplayer;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.ScrollView;
+
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 
-public class PunjabiSongs extends AppCompatActivity implements View.OnClickListener{
+import java.util.ArrayList;
 
+public class PunjabiSongs extends AppCompatActivity {
+     ListView listview;
+     ListViewAdapter adapter;
+     String[] title;
+     ArrayList<model> arrayList = new ArrayList<model>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_punjabi_songs);
 
-        TextView txt1 = (TextView) findViewById(R.id.Song1);
-        TextView txt2 = (TextView) findViewById(R.id.Song2);
-        TextView txt3 = (TextView) findViewById(R.id.Song3);
-        TextView txt4 = (TextView) findViewById(R.id.Song4);
-        TextView txt5 = (TextView) findViewById(R.id.Song5);
-        TextView txt6 = (TextView) findViewById(R.id.Song6);
-        TextView txt7 = (TextView) findViewById(R.id.Song7);
-        TextView txt8 = (TextView) findViewById(R.id.Song8);
-        TextView txt9 = (TextView) findViewById(R.id.Song9);
-        TextView txt10 = (TextView) findViewById(R.id.Song10);
-        TextView txt11 = (TextView) findViewById(R.id.Song11);
-        TextView txt12 = (TextView) findViewById(R.id.Song12);
-        TextView txt13 = (TextView) findViewById(R.id.Song13);
-        TextView txt14 = (TextView) findViewById(R.id.Song14);
-        TextView txt15 = (TextView) findViewById(R.id.Song15);
-        TextView txt16 = (TextView) findViewById(R.id.Song16);
-        TextView txt17 = (TextView) findViewById(R.id.Song17);
-        TextView txt18 = (TextView) findViewById(R.id.Song18);
-        TextView txt19 = (TextView) findViewById(R.id.Song19);
-        TextView txt20 = (TextView) findViewById(R.id.Song20);
-        TextView txt21 = (TextView) findViewById(R.id.Song21);
-        TextView txt22 = (TextView) findViewById(R.id.Song22);
-        TextView txt23 = (TextView) findViewById(R.id.Song23);
-        TextView txt24 = (TextView) findViewById(R.id.Song24);
-        TextView txt25 = (TextView) findViewById(R.id.Song25);
-        TextView txt26 = (TextView) findViewById(R.id.Song26);
+        title = new String[] {"Laung Laachi", "Lahore", "High Rated Gabru", "Prada", "Daru Badnaam", "Nikle Current", "Made In India",
+                             "Naah", "3 Peg", "Kya Baat Hai", "Na Ja", "Suit", "Ishare Tere", "Diamond", "Badnaam", "Backbone", "Khaab",
+                              "Illegal Weapon", "Sakhiyaan", "Nawab", "Bapu Zamidar", "Leambadgini", "Mil Lo Na", "Gaal Ni Kadni", "Jaani Tera Naa", "Qismat"};
 
-        txt1.setOnClickListener(this);
-        txt2.setOnClickListener(this);
-        txt3.setOnClickListener(this);
-        txt4.setOnClickListener(this);
-        txt5.setOnClickListener(this);
-        txt6.setOnClickListener(this);
-        txt7.setOnClickListener(this);
-        txt8.setOnClickListener(this);
-        txt9.setOnClickListener(this);
-        txt10.setOnClickListener(this);
-        txt11.setOnClickListener(this);
-        txt12.setOnClickListener(this);
-        txt13.setOnClickListener(this);
-        txt14.setOnClickListener(this);
-        txt15.setOnClickListener(this);
-        txt16.setOnClickListener(this);
-        txt17.setOnClickListener(this);
-        txt18.setOnClickListener(this);
-        txt19.setOnClickListener(this);
-        txt20.setOnClickListener(this);
-        txt21.setOnClickListener(this);
-        txt22.setOnClickListener(this);
-        txt23.setOnClickListener(this);
-        txt24.setOnClickListener(this);
-        txt25.setOnClickListener(this);
-        txt26.setOnClickListener(this);
+        listview = (ListView)findViewById(R.id.listview);
 
-    }
+        for(int i = 0; i<title.length; i++){
+            model Model = new model(title[i]);
 
+            //bind all strings in array
+            arrayList.add(Model);
+        }
+
+        //pass results to ListViewAdapter class
+        adapter = new ListViewAdapter(this, arrayList);
+
+        //bind the adapter to listview
+
+        listview.setAdapter(adapter);
+           }
+    // to link menu.xml to the activity in which we want to add search bar
     @Override
-    public void onClick(View v) {
-        Intent intent = null;
-        switch(v.getId()){
-            case R.id.Song1:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_1,0, true, false);
-                break;
+    public boolean onCreateOptionsMenu(Menu menu) {
+          getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem myActionMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) myActionMenuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-            case R.id.Song2:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_2,0, true, false);
-                break;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(TextUtils.isEmpty(newText)){
+                    adapter.filter("");
+                    listview.clearTextFilter();
+                }
+                else{
+                    adapter.filter(newText);
+                }
+                return true;
+            }
+        });
 
-            case R.id.Song3:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_3,0, true, false);
-                break;
-
-            case R.id.Song4:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_4,0, true, false);
-                break;
-
-            case R.id.Song5:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_5,0, true, false);
-                break;
-
-            case R.id.Song6:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_6,0, true, false);
-                break;
-
-            case R.id.Song7:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_7,0, true, false);
-                break;
-
-            case R.id.Song8:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_8,0, true, false);
-                break;
-
-            case R.id.Song9:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_9,0, true, false);
-                break;
-
-            case R.id.Song10:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_10,0, true, false);
-                break;
-
-            case R.id.Song11:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_11,0, true, false);
-                break;
-
-            case R.id.Song12:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_12,0, true, false);
-                break;
-
-            case R.id.Song13:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_13,0, true, false);
-                break;
-
-            case R.id.Song14:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_14,0, true, false);
-                break;
-
-            case R.id.Song15:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_15,0, true, false);
-                break;
-
-            case R.id.Song16:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_16,0, true, false);
-                break;
-
-            case R.id.Song17:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_17,0, true, false);
-                break;
-
-            case R.id.Song18:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_18,0, true, false);
-                break;
-
-            case R.id.Song19:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_19,0, true, false);
-                break;
-
-            case R.id.Song20:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_20,0, true, false);
-                break;
-
-            case R.id.Song21:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_21,0, true, false);
-                break;
-
-            case R.id.Song22:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_22,0, true, false);
-                break;
-
-            case R.id.Song23:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_23,0, true, false);
-                break;
-
-            case R.id.Song24:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_24,0, true, false);
-                break;
-
-            case R.id.Song25:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_25,0, true, false);
-                break;
-
-            case R.id.Song26:
-                intent = YouTubeStandalonePlayer.createVideoIntent(this, YoutubeActivity.GOOGLE_API_KEY, YoutubeActivity.YOUTUBE_VIDEO_ID_26,0, true, false);
-                break;
-
-            default:
-        }
-        if(intent != null){
-            startActivity(intent);
-        }
+        return true;
     }
+
+
 }
